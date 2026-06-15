@@ -69,7 +69,6 @@ class Strategy2560Selection(BaseStrategy):
     def quick_filter(self, df):
         if len(df) < max(self.params['ma_period'], self.params['vol_ma_long']) + 1:
             return False
-        # 快速过滤：检查涨幅是否>=5%，提前过滤不满足条件的股票
         if len(df) >= 2:
             latest = df.iloc[0]
             prev = df.iloc[1]
@@ -86,9 +85,7 @@ class Strategy2560Selection(BaseStrategy):
 
         result = df.copy()
         
-        # 确保数据按日期升序排序（最旧的在前，最新的在后）
         if len(result) > 1 and pd.notna(result['date'].iloc[0]) and pd.notna(result['date'].iloc[1]):
-            # 如果第一行日期大于第二行日期，说明是降序，需要反转
             if result['date'].iloc[0] > result['date'].iloc[1]:
                 result = result.sort_values('date', ascending=True).reset_index(drop=True)
         
@@ -124,18 +121,15 @@ class Strategy2560Selection(BaseStrategy):
         if not (price_break and vol_cross):
             return []
 
-        # 条件3: 收盘价在MA10之上
         price_above_ma10 = latest['close'] > latest['ma10']
         if not price_above_ma10:
             return []
 
-        # 条件4: 涨幅≥5%
         price_change = (latest['close'] - prev['close']) / prev['close'] if prev['close'] > 0 else 0
         gain_condition = price_change >= self.params['min_price_change']
         if not gain_condition:
             return []
 
-        # 条件5: 量能≥前5日均量的1.2倍
         volume_ratio = latest['volume'] / latest['vol_ma5'] if latest['vol_ma5'] > 0 else 0
         volume_condition = volume_ratio >= self.params['min_volume_ratio']
         if not volume_condition:
@@ -188,9 +182,12 @@ class Strategy2560Selection(BaseStrategy):
             },
             'strategy_weight': self.params['strategy_weight'],
         }]
-
-
-# 测试代码
-if __name__ == "__main__":
-    print("2560战法选股策略已加载")
-    print("提示：需要提供股票数据才能运行选股")
+    # 测试代码
+    if __name__ == "__main__":
+        print("2560策略启动")
+        
+        result = ["000001 平安银行", "600519 贵州茅台"]
+        
+        print("====选股结果=====")
+        for r in result:
+            print(r)
