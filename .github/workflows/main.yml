@@ -24,4 +24,4 @@ jobs:
           pip install pandas numpy yfinance
 
       - name: Run strategy
-        run: python strategy/strategy_2560.py
+        run: python strategy/strategy_2561.py
