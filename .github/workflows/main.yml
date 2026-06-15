@@ -24,4 +24,6 @@ jobs:
           pip install pandas numpy yfinance
 
       - name: Run strategy
-        run: python strategy/strategy_2561.py
+        run: |
+          python -c "print('2560战法选股策略已加载')"
+          python strategy/strategy_2561.py
