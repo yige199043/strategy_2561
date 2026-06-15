@@ -188,3 +188,9 @@ class Strategy2560Selection(BaseStrategy):
             },
             'strategy_weight': self.params['strategy_weight'],
         }]
+
+
+# 测试代码
+if __name__ == "__main__":
+    print("2560战法选股策略已加载")
+    print("提示：需要提供股票数据才能运行选股")
